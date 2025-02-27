@@ -2,19 +2,22 @@
 
 namespace App\Providers;
 
+use App\Filters\BrandFilter;
+use App\Filters\PriceFilter;
 use App\View\Composers\NavigationComposer;
+use Domain\Catalog\Filters\FiltersManager;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
-class ViewServiceProvider extends ServiceProvider
+class CatalogServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-        //
+        app()->singleton(FiltersManager::class);
     }
 
     /**
@@ -22,8 +25,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Vite::macro('image', fn (string $asset) => $this->asset("resources/images/{$asset}") );
-
-        View::composer('*', NavigationComposer::class);
+        app(FiltersManager::class)->registerFilters([
+            new PriceFilter(),
+            new BrandFilter()
+        ]);
     }
 }

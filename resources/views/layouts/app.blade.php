@@ -10,20 +10,19 @@
 </head>
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
 
-@include('shared.flash')
+    @include('shared.flash')
 
-@include('shared.header')
+    @include('shared.header')
 
-<main class="py-16 lg:py-20">
-    <div class="container">
+    <main class="py-16 lg:py-20">
+        <div class="container">
 
-        @yield('content')
+            @yield('content')
 
-    </div>
-</main>
+        </div>
+    </main>
 
-@include('shared.footer')
+    @include('shared.footer')
 
-<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 </body>
 </html>

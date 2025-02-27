@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Pipeline\Pipeline;
+use Laravel\Scout\Searchable;
 use Support\Casts\PriceCast;
 use Support\Traits\Models\HasSlug;
 use Support\Traits\Models\HasThumbnail;
@@ -27,7 +29,8 @@ class Product extends Model
         'thumbnail',
         'brand_id',
         'on_home_page',
-        'sorting'
+        'sorting',
+        'text'
     ];
 
     protected $casts = [
@@ -37,6 +40,31 @@ class Product extends Model
     private function thumbnailDir(): string
     {
         return 'products';
+    }
+
+    public function scopeFiltered(Builder $query): void
+    {
+        app(Pipeline::class)
+            ->send($query)
+            ->through(filters())
+            ->thenReturn();
+
+        /*foreach (filters() as $filter) {
+            $query = $filter->apply($query);
+        }*/
+    }
+
+    public function scopeSorted(Builder $query): void
+    {
+        $query->when(request()->str('sort'), function (Builder $q) {
+            $column = request()->str('sort');
+
+            if ($column->contains(['price', 'title'])) {
+                $direction = $column->contains('-') ? 'DESC' : 'ASC';
+
+                $q->orderBy((string) $column->remove('-'), $direction);
+            }
+        });
     }
 
     public function scopeHomePage(Builder $query): void

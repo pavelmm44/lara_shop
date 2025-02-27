@@ -23,7 +23,8 @@ class ProductFactory extends Factory
             'thumbnail' => $this->faker->fixturesImage('products', 'products'),
             'brand_id' => Brand::query()->inRandomOrder()->value('id'),
             'on_home_page' => fake()->boolean,
-            'sorting' => fake()->numberBetween(1,999)
+            'sorting' => fake()->numberBetween(1,999),
+            'text' => fake()->realText()
         ];
     }
 }
