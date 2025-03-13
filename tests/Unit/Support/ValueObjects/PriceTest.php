@@ -1,8 +1,9 @@
 <?php
 
-namespace Support\ValueObjects;
+namespace Tests\Unit\Support\ValueObjects;
 
 use InvalidArgumentException;
+use Support\ValueObjects\Price;
 use Tests\TestCase;
 
 class PriceTest extends TestCase

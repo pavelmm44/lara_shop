@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\DTOs;
+namespace Tests\Feature\Auth\DTOs;
 
 use App\Http\Requests\SignUpFormRequest;
 use Domain\Auth\DTOs\NewUserDTO;

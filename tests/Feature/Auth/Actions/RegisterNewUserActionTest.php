@@ -1,6 +1,6 @@
 <?php
 
-namespace Auth\Actions;
+namespace Tests\Feature\Auth\Actions;
 
 use App\Http\Requests\SignUpFormRequest;
 use Domain\Auth\Contracts\RegisterNewUserContract;
