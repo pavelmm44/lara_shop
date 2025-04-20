@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Services\Telegram\TelegramBotApi;
+use Services\Telegram\TelegramBotApiContract;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
+        app()->bind(TelegramBotApiContract::class, TelegramBotApi::class);
     }
 
     /**
@@ -29,14 +31,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::shouldBeStrict(!app()->isProduction());
-
-        RateLimiter::for('global', function (Request $request) {
-            return Limit::perMinute(500)
-                ->by($request->user()?->id ?: $request->ip())
-                ->response(function (Request $request, array $headers) {
-                    return response('Take it easy', Response::HTTP_TOO_MANY_REQUESTS, $headers);
-                });
-        });
 
         if (app()->isProduction()) {
 
