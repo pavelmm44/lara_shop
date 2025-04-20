@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Connection;
-use Illuminate\Database\Events\QueryExecuted;
+use Carbon\CarbonInterval;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+
     }
 
     /**
@@ -27,12 +28,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::preventLazyLoading(!app()->isProduction());
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
-
-        DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
-            // Notify development team...
-        });
+        Model::shouldBeStrict(!app()->isProduction());
 
         RateLimiter::for('global', function (Request $request) {
             return Limit::perMinute(500)
@@ -41,5 +37,26 @@ class AppServiceProvider extends ServiceProvider
                     return response('Take it easy', Response::HTTP_TOO_MANY_REQUESTS, $headers);
                 });
         });
+
+        if (app()->isProduction()) {
+
+            DB::listen(function (QueryExecuted $query) {
+
+                if ($query->time > 100) {
+                    logger()
+                        ->channel('telegram')
+                        ->debug('query is longer than 1s:' . $query->toRawSql());
+                }
+            });
+
+            app(Kernel::class)->whenRequestLifecycleIsLongerThan(
+                CarbonInterval::seconds(4),
+                function ( ) {
+                    logger()
+                        ->channel('telegram')
+                        ->debug('whenRequestLifecycleIsLongerThan: ' . request()->url());
+                }
+            );
+        }
     }
 }
