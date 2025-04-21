@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Brand;
+use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,12 +19,11 @@ class ProductFactory extends Factory
     {
         return [
             'title' => ucfirst(fake()->words(2, true)),
-            'price' => fake()->numberBetween(100, 100000),
-            'thumbnail' => $this->faker->fixturesImage(
-                'products',
-                'images/products'
-            ),
-            'brand_id' => Brand::query()->inRandomOrder()->value('id')
+            'price' => fake()->numberBetween(10000, 10000000),
+            'thumbnail' => $this->faker->fixturesImage('products', 'products'),
+            'brand_id' => Brand::query()->inRandomOrder()->value('id'),
+            'on_home_page' => fake()->boolean,
+            'sorting' => fake()->numberBetween(1,999)
         ];
     }
 }
