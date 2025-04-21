@@ -10,6 +10,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
+use Support\SessionRegenerator;
 
 class SignUpController extends Controller
 {
@@ -20,9 +21,11 @@ class SignUpController extends Controller
 
     public function handle(SignUpFormRequest $request, RegisterNewUserContract $action): RedirectResponse
     {
-        $action(
+        $user = $action(
             NewUserDTO::fromRequest($request)
         );
+
+        SessionRegenerator::run(fn () => auth()->login($user));
 
         return redirect()->route('home');
     }

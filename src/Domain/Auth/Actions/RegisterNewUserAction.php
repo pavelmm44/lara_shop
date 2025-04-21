@@ -6,10 +6,11 @@ use Domain\Auth\Contracts\RegisterNewUserContract;
 use Domain\Auth\DTOs\NewUserDTO;
 use Domain\Auth\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Support\SessionRegenerator;
 
 class RegisterNewUserAction implements RegisterNewUserContract
 {
-    public function __invoke(NewUserDTO $dto): void
+    public function __invoke(NewUserDTO $dto): User
     {
         $user = User::query()->create([
             'name' => $dto->name,
@@ -18,6 +19,6 @@ class RegisterNewUserAction implements RegisterNewUserContract
         ]);
 
         event(new Registered($user));
-        auth()->login($user);
+        return $user;
     }
 }
