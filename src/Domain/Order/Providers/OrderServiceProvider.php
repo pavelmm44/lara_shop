@@ -9,7 +9,8 @@ class OrderServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(
-            ActionsServiceProvider::class
+            ActionsServiceProvider::class,
+            PaymentSystemProvider::class
         );
     }
 
