@@ -6,11 +6,14 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use Database\Factories\UserFactory;
 use Domain\Auth\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
 
 class ForgotPasswordControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     private function testCredentials(): array
     {
         return [

@@ -6,10 +6,13 @@ use App\Http\Controllers\HomeController;
 use Database\Factories\BrandFactory;
 use Database\Factories\CategoryFactory;
 use Database\Factories\ProductFactory;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class HomeControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_success_response()
     {
         CategoryFactory::new()

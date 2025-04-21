@@ -15,7 +15,7 @@ class TelegramBotApiTest extends TestCase
             TelegramBotApi::HOST . '*' => Http::response(['ok' => true])
         ]);
 
-        $response = TelegramBotApi::sendMessage('', 1, '');
+        $response = TelegramBotApi::sendMessage('test', 1, 'message');
 
         $this->assertTrue($response);
     }

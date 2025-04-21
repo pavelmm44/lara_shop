@@ -9,6 +9,7 @@ use App\Notifications\NewUserNotification;
 use Database\Factories\UserFactory;
 use Domain\Auth\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Testing\TestResponse;
@@ -16,6 +17,8 @@ use Tests\TestCase;
 
 class SignUpControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     private array $request;
 
     protected function setUp(): void

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use Database\Factories\UserFactory;
 use Domain\Auth\Models\User;
 use DomainException;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\TestResponse;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
@@ -14,6 +15,8 @@ use Tests\TestCase;
 
 class SocialAuthControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     private function mockSocialiteCallback(string|int $githubId): void
     {
         $user = $this->mock(SocialiteUser::class, function (MockInterface $m) use($githubId) {
