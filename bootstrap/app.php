@@ -22,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->renderable(function (\DomainException $e) {
             flash()->alert($e->getMessage());
 
-            return back();
+            return session()->previousUrl()
+                ? back()
+                : redirect()->route('home');
         });
     })->create();
