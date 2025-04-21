@@ -55,9 +55,11 @@
                     <div class="text-pink text-lg md:text-xl font-black">{{ $product->price }} $</div>
                     <div class="text-body text-md md:text-lg font-bold line-through">59 300 ₽</div>
                 </div>
-                <ul class="sm:max-w-[360px] space-y-2 mt-8">
-                    @each('product.shared.property', $product->json_properties, 'value')
-                </ul>
+                @if($product->json_properties)
+                    <ul class="sm:max-w-[360px] space-y-2 mt-8">
+                        @each('product.shared.property', $product->json_properties, 'value')
+                    </ul>
+                @endif
 
                 <!-- Add to cart -->
                 <form action="{{ route('cart.add', $product) }}" method="POST" class="space-y-8 mt-8">
@@ -81,7 +83,7 @@
 
                         <div class="flex items-stretch h-[54px] lg:h-[72px] gap-2">
                             <button type="button" class="w-12 h-full rounded-lg border border-body/10 hover:bg-card/20 active:bg-card/50 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs text-center font-bold shadow-transparent outline-0 transition">-</button>
-                            <input name="quantity" type="number" class="h-full px-2 md:px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs text-center font-bold shadow-transparent outline-0 transition" min="1" max="999" value="1" placeholder="Quantity">
+                            <input name="quantity" type="number" class="h-full px-2 md:px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs text-center font-bold shadow-transparent outline-0 transition" min="1" max="999" value="1" placeholder="Qty">
                             <button type="button" class="w-12 h-full rounded-lg border border-body/10 hover:bg-card/20 active:bg-card/50 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs text-center font-bold shadow-transparent outline-0 transition">+</button>
                         </div>
                         <button type="submit" class="!px-6 xs:!px-8 btn btn-pink">Add to cart</button>
