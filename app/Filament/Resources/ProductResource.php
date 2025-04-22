@@ -34,7 +34,7 @@ class ProductResource extends Resource
             ->schema([
 
                 Forms\Components\Tabs::make()->schema([
-                    Forms\Components\Tabs\Tab::make('Post')->schema([
+                    Forms\Components\Tabs\Tab::make('Product')->schema([
                         TextInput::make('title')
                             ->required()
                             ->maxLength(255),
@@ -71,17 +71,6 @@ class ProductResource extends Resource
                             ->numeric()
                             ->required(),
                         Textarea::make('text'),
-                        /*Select::make('categories')
-                            ->multiple()
-                            ->relationship('categories', 'title')
-                            ->required()
-                            ->searchable(),
-                        Forms\Components\CheckboxList::make('categories')
-                            ->relationship('categories', 'title')
-                            ->columns(2)
-                            ->required()
-                            ->searchable()
-                            ->label('Categories')*/
                     ]),
 
                     Forms\Components\Tabs\Tab::make('Categories')->schema([
@@ -92,21 +81,6 @@ class ProductResource extends Resource
                             ->required()
                             ->searchable(),
                     ]),
-
-                    /*Forms\Components\Tabs\Tab::make('Properties')->schema([
-
-                        Forms\Components\CheckboxList::make('List of properties')
-                            ->relationship('properties', 'title')
-                            ->columns(1)
-                            ->searchable()
-                            ->pivotData([
-                                'value' =>
-                                    Forms\Components\TextInput::make('value')
-                                    ->required()
-                                    ->maxLength(255)
-                            ])
-                        ,
-                    ]),*/
                 ])
 
             ])->columns(1);
@@ -149,7 +123,8 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\PropertiesRelationManager::class
+            RelationManagers\PropertiesRelationManager::class,
+            RelationManagers\OptionValuesRelationManager::class,
         ];
     }
 
